@@ -39,6 +39,7 @@ func getAllCharacters(c *gin.Context) {
 		var character models.Characters
 		var alternateNames []sql.NullString
 		var wand models.Wands
+		var recasts []sql.NullString
 
 		err := rows.Scan(&character.Id, &character.Name, &character.Species, &character.Gender, &character.House, &character.DateOfBirth, &character.YearOfBirth, &character.IsWizard, &character.BloodStatus, &character.EyeColor, &character.HairColor, &character.Patronus, &character.IsHogwartsStudent, &character.IsHogwartsStaff, &character.Actor, &character.IsAlive, &wand.Wood, &wand.Core, &wand.Length)
 
@@ -68,8 +69,31 @@ func getAllCharacters(c *gin.Context) {
 			alternateNames = append(alternateNames, alternateName)
 		}
 
+		recastsQuery := fmt.Sprintf(`SELECT recasts.name
+		FROM recasts
+		WHERE recasts.character_id = '%s';`, character.Id)
+
+		recastsRow, err := db.Query(recastsQuery)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		for recastsRow.Next() {
+			var recastName sql.NullString
+			
+			err := recastsRow.Scan(&recastName)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			recasts = append(recasts, recastName)
+		}
+
 		character.AlternateNames = alternateNames
 		character.Wand = wand
+		character.Recasts = recasts
 
 		allCharacters = append(allCharacters, character)
 	}

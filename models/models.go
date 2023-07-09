@@ -22,15 +22,11 @@ type Characters struct {
 	Image             string           `json:"image"`
 	AlternateNames    []sql.NullString `json:"alternateNames"`
 	Wand              Wands            `json:"wand"`
-	Recasts           Recasts          `json:"recasts"`
+	Recasts           []sql.NullString `json:"recasts"`
 }
 
 type Wands struct {
 	Wood   sql.NullString  `json:"wood"`
 	Core   sql.NullString  `json:"core"`
 	Length sql.NullFloat64 `json:"length"`
-}
-
-type Recasts struct {
-	Recasts []sql.NullString `json:"recasts"`
 }
