@@ -125,3 +125,19 @@ ON characters.id = alternate_names.character_id
 LEFT JOIN wands
 ON characters.id = wands.character_id
 GROUP BY characters.id, characters.name, characters.species, characters.gender, characters.house, characters.dateOfBirth, characters.yearOfBirth, characters.isWizard, characters.bloodStatus, characters.eyeColor, characters.hairColor, characters.patronus, characters.isHogwartsStudent, characters.isHogwartsStaff, characters.actor, characters.isAlive, wands.wood, wands.core, wands.length;
+
+-- Select characters with their wand details
+SELECT characters.id, characters.name, characters.species, characters.gender, characters.house, characters.dateOfBirth, characters.yearOfBirth, characters.isWizard, characters.bloodStatus, characters.eyeColor, characters.hairColor, characters.patronus, characters.isHogwartsStudent, characters.isHogwartsStaff, characters.actor, characters.isAlive, wands.wood, wands.core, wands.length
+FROM characters
+LEFT JOIN wands
+ON characters.id = wands.character_id;
+
+-- Select alternate names of a character
+SELECT alternate_names.name
+FROM alternate_names
+WHERE alternate_names.character_id = '829460ac-4c54-4cba-9fe2-0d881d9dc7eb';
+
+-- Select recasts
+SELECT recasts.name
+FROM recasts
+WHERE recasts.character_id = characters.id;
