@@ -17,3 +17,13 @@ func ConnectToDB(userName string, password string, port int, dbName string) *sql
 
 	return db
 }
+
+func FetchAllRows(db *sql.DB, query string) *sql.Rows {
+	rows, err := db.Query(query)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return rows
+}
