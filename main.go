@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"harry_potter_api/models"
 	"harry_potter_api/utils"
 
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -29,19 +29,17 @@ func getAllCharacters(c *gin.Context) {
 	LEFT JOIN wands
 	ON characters.id = wands.character_id;`
 
-	rows, err := db.Query(query)
+	// Fetch all the characters data
+	allCharactersRow := utils.FetchAllRows(db, query)
+	defer allCharactersRow.Close()
 
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for rows.Next() {
+	for allCharactersRow.Next() {
 		var character models.Characters
 		var alternateNames []sql.NullString
 		var wand models.Wands
 		var recasts []sql.NullString
 
-		err := rows.Scan(&character.Id, &character.Name, &character.Species, &character.Gender, &character.House, &character.DateOfBirth, &character.YearOfBirth, &character.IsWizard, &character.BloodStatus, &character.EyeColor, &character.HairColor, &character.Patronus, &character.IsHogwartsStudent, &character.IsHogwartsStaff, &character.Actor, &character.IsAlive, &wand.Wood, &wand.Core, &wand.Length)
+		err := allCharactersRow.Scan(&character.Id, &character.Name, &character.Species, &character.Gender, &character.House, &character.DateOfBirth, &character.YearOfBirth, &character.IsWizard, &character.BloodStatus, &character.EyeColor, &character.HairColor, &character.Patronus, &character.IsHogwartsStudent, &character.IsHogwartsStaff, &character.Actor, &character.IsAlive, &wand.Wood, &wand.Core, &wand.Length)
 
 		if err != nil {
 			log.Fatal(err)
@@ -51,16 +49,14 @@ func getAllCharacters(c *gin.Context) {
 		FROM alternate_names
 		WHERE alternate_names.character_id = '%s';`, character.Id)
 
-		alternateNamesRow, err := db.Query(alternateNamesQuery)
+		// Fetch all the alternate names for a character if available
+		alternateNamesRows := utils.FetchAllRows(db, alternateNamesQuery)
+		alternateNamesRows.Close()
 
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		for alternateNamesRow.Next() {
+		for alternateNamesRows.Next() {
 			var alternateName sql.NullString
 
-			err := alternateNamesRow.Scan(&alternateName)
+			err := alternateNamesRows.Scan(&alternateName)
 
 			if err != nil {
 				log.Fatal(err)
@@ -73,16 +69,14 @@ func getAllCharacters(c *gin.Context) {
 		FROM recasts
 		WHERE recasts.character_id = '%s';`, character.Id)
 
-		recastsRow, err := db.Query(recastsQuery)
+		// Fetch all the names of the recasts for that character if available
+		recastsRows := utils.FetchAllRows(db, recastsQuery)
+		recastsRows.Close()
 
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		for recastsRow.Next() {
+		for recastsRows.Next() {
 			var recastName sql.NullString
-			
-			err := recastsRow.Scan(&recastName)
+
+			err := recastsRows.Scan(&recastName)
 
 			if err != nil {
 				log.Fatal(err)
