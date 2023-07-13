@@ -21,9 +21,10 @@ const (
 )
 
 var db *sql.DB
-var allCharacters []models.Characters
 
 func getAllCharacters(c *gin.Context) {
+	var allCharacters []models.Characters
+
 	query := `SELECT characters.id, characters.name, characters.species, characters.gender, characters.house, characters.dateOfBirth, characters.yearOfBirth, characters.isWizard, characters.bloodStatus, characters.eyeColor, characters.hairColor, characters.patronus, characters.isHogwartsStudent, characters.isHogwartsStaff, characters.actor, characters.isAlive, characters.image, wands.wood, wands.core, wands.length
 		FROM characters
 		LEFT JOIN wands
@@ -168,6 +169,30 @@ func getCharacterById(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, character)
 }
 
+func getAllSpells(c *gin.Context) {
+	var allSpells []models.Spells
+
+	query := `SELECT *
+		FROM spells;`
+
+	spellsRow := utils.FetchAllRows(db, query)
+	defer spellsRow.Close()
+
+	for spellsRow.Next() {
+		var spell models.Spells
+
+		err := spellsRow.Scan(&spell.Id, &spell.Name, &spell.Description)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		allSpells = append(allSpells, spell)
+	}
+
+	c.IndentedJSON(http.StatusOK, allSpells)
+}
+
 func main() {
 	db = utils.ConnectToDB(userName, password, port, dbName)
 	defer db.Close()
@@ -176,6 +201,7 @@ func main() {
 
 	router.GET("/api/characters", getAllCharacters)
 	router.GET("/api/character/:id", getCharacterById)
+	router.GET("/api/spells", getAllSpells)
 
 	router.Run("127.0.0.1:8080")
 }
