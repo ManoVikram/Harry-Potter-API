@@ -41,6 +41,12 @@ CREATE TABLE recasts (
     FOREIGN KEY(character_id) REFERENCES characters(id)
 );
 
+CREATE TABLE spells (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name TEXT NOT NULL,
+    description TEXT NOT NULL
+);
+
 -- Characters
 
 INSERT INTO characters (name, species, gender, house, dateOfBirth, yearOfBirth, isWizard, bloodStatus, eyeColor, hairColor, patronus, isHogwartsStudent, isHogwartsStaff, actor, isAlive, image)
@@ -207,6 +213,239 @@ VALUES ('e30cb30d-ce46-489e-9060-c555866b4881', 'James Walters');
 
 INSERT INTO recasts (character_id, name)
 VALUES ('e30cb30d-ce46-489e-9060-c555866b4881', 'Rohan Gotobed');
+
+-- Spells
+
+INSERT INTO spells (name, description)
+VALUES ('Aberto', 'Opens locked doors');
+
+INSERT INTO spells (name, description)
+VALUES ('Accio', 'Summons objects');
+
+INSERT INTO spells (name, description)
+VALUES ('Aguamenti', 'Summons water');
+
+INSERT INTO spells (name, description)
+VALUES ('Alohomora', 'Unlocks objects');
+
+INSERT INTO spells (name, description)
+VALUES ('Anapneo', 'Clears someone''s airway');
+
+INSERT INTO spells (name, description)
+VALUES ('Aparecium', 'Reveals secret written messages');
+
+INSERT INTO spells (name, description)
+VALUES ('Apparate', 'A non-verbal transportation spell that allows a witch or wizard to instantly travel on the spot and appear at another location (disapparate is the opposite)');
+
+INSERT INTO spells (name, description)
+VALUES ('Ascendio', 'Propells someone into the air');
+
+INSERT INTO spells (name, description)
+VALUES ('Avada Kedavra', 'Also known as The Killing Curse, the most evil spell in the Wizarding World; one of three Unforgivable Curses; Harry Potter is the only known witch or wizard to survive it');
+
+INSERT INTO spells (name, description)
+VALUES ('Avis', 'Conjures a small flock of birds');
+
+INSERT INTO spells (name, description)
+VALUES ('Bat', 'Bogey Hex - Turns the target''s boogers into bats');
+
+INSERT INTO spells (name, description)
+VALUES ('Bombardo', 'Creates an explosion');
+
+INSERT INTO spells (name, description)
+VALUES ('Brackium Emendo', 'Heals broken bones');
+
+INSERT INTO spells (name, description)
+VALUES ('Capacious Extremis', 'Known as the Extension Charm, it''s a complicated spell that can greatly expand or extend the capacity of an object or space without affecting it externally');
+
+INSERT INTO spells (name, description)
+VALUES ('Confundo', 'Known as the Confundus Charm, it causes confusion of the target');
+
+INSERT INTO spells (name, description)
+VALUES ('Conjunctivitis Curse', 'Affects the eyes and sight of a target');
+
+INSERT INTO spells (name, description)
+VALUES ('Crinus Muto', 'Changes hair color and style');
+
+INSERT INTO spells (name, description)
+VALUES ('Crucio', 'One of three Unforgivable Curses, it causes unbearable pain in the target');
+
+INSERT INTO spells (name, description)
+VALUES ('Diffindo', 'Used to precisely cut an object');
+
+INSERT INTO spells (name, description)
+VALUES ('Disillusionment Charm', 'Causes the target to take on the appearance of its surroundings');
+
+INSERT INTO spells (name, description)
+VALUES ('Disapparate', 'A non-verbal transportation spell that allows a witch or wizard to instantly travel on the spot and leave for another location (apparate is the opposite)');
+
+INSERT INTO spells (name, description)
+VALUES ('Engorgio', 'Causes rapid growth in the targeted object');
+
+INSERT INTO spells (name, description)
+VALUES ('Episkey', 'Heals minor injuries');
+
+INSERT INTO spells (name, description)
+VALUES ('Expecto patronum', 'The Patronus Charm is a powerful projection of hope and happiness that drives away Dementors; a corpeal Patronus takes the respective animal form of the caster, while a non-corpeal appears as a wisp of light; at 13, Harry Potter was the youngest known witch or wizard to produce a corpeal Patronus');
+
+INSERT INTO spells (name, description)
+VALUES ('Erecto', 'Allows a witch or wizard to build a structure, like a tent');
+
+INSERT INTO spells (name, description)
+VALUES ('Evanesco', 'Vanishes objects');
+
+INSERT INTO spells (name, description)
+VALUES ('Expelliarmus', 'Forces an opponent to drop whatever''s in their possession');
+
+INSERT INTO spells (name, description)
+VALUES ('Ferula', 'A healing charm that conjures wraps and bandages for wounds');
+
+INSERT INTO spells (name, description)
+VALUES ('Fidelius Charm', 'A complex charm that conceals a secret into the soul of a chosen "Secret Keeper". If a location is the subject of concealment, it becomes undetectable to others');
+
+INSERT INTO spells (name, description)
+VALUES ('Fiendfyre Curse', 'Conjures destructive, enormous enchanted flames');
+
+INSERT INTO spells (name, description)
+VALUES ('Finite Incantatem', 'A general counter-spell that''s used to reverse or counter already cast charms');
+
+INSERT INTO spells (name, description)
+VALUES ('Furnunculus Curse', 'A jinx that causes a breakout of boils or pimples');
+
+INSERT INTO spells (name, description)
+VALUES ('Geminio', 'Duplicates objects');
+
+INSERT INTO spells (name, description)
+VALUES ('Glisseo', 'Transforms a staircase into a slide');
+
+INSERT INTO spells (name, description)
+VALUES ('Homenum Revelio', 'Reveals the presence of another person');
+
+INSERT INTO spells (name, description)
+VALUES ('Homonculus Charm', 'Detects anyone''s true identity and location on a piece of parchment; used to create the Marauder''s Map');
+
+INSERT INTO spells (name, description)
+VALUES ('Immobulus', 'Immobilises living targets');
+
+INSERT INTO spells (name, description)
+VALUES ('Impedimenta', 'A temporary jinx that slows the movement of the target');
+
+INSERT INTO spells (name, description)
+VALUES ('Incarcerous', 'Conjures ropes');
+
+INSERT INTO spells (name, description)
+VALUES ('Imperio', 'One of the three Unforgivable Curses, it places the target under the complete control of the caster');
+
+INSERT INTO spells (name, description)
+VALUES ('Impervius', 'Makes an object waterproof');
+
+INSERT INTO spells (name, description)
+VALUES ('Incendio', 'Conjures flames');
+
+INSERT INTO spells (name, description)
+VALUES ('Langlock', 'Causes the target''s tongue to stick to the roof of their mouth');
+
+INSERT INTO spells (name, description)
+VALUES ('Legilimens', 'Invading or navigating another''s mind');
+
+INSERT INTO spells (name, description)
+VALUES ('Levicorpus', 'Levitates the target by their ankle');
+
+INSERT INTO spells (name, description)
+VALUES ('Locomotor Mortis', 'The Leg-Locker curse bounds the target''s legs');
+
+INSERT INTO spells (name, description)
+VALUES ('Lumos', 'Illuminates the caster''s wand');
+
+INSERT INTO spells (name, description)
+VALUES ('Morsmordre', 'Conjures and projects Lord Voldemort''s Dark Mark');
+
+INSERT INTO spells (name, description)
+VALUES ('Mucus Ad Nauseam', 'Inflicts an extreme runny nose or cold');
+
+INSERT INTO spells (name, description)
+VALUES ('Muffliato', 'Creates a buzzing sound in the target''s ears to prevent eavesdropping');
+
+INSERT INTO spells (name, description)
+VALUES ('Nox', 'Reverses the lumos charm, extinguishing a wand''s light');
+
+INSERT INTO spells (name, description)
+VALUES ('Obliviate', 'Erases the target''s memory');
+
+INSERT INTO spells (name, description)
+VALUES ('Obscuro', 'Conjures a blindfold');
+
+INSERT INTO spells (name, description)
+VALUES ('Oculus Reparo', 'Repairs eyeglasses');
+
+INSERT INTO spells (name, description)
+VALUES ('Oppugno', 'Directs an object or person to attack a victim');
+
+INSERT INTO spells (name, description)
+VALUES ('Petrificus Totalus', 'Temporarily freezes or petrifies the body of the target');
+
+INSERT INTO spells (name, description)
+VALUES ('Periculum', 'Conjures flares/red sparks');
+
+INSERT INTO spells (name, description)
+VALUES ('Piertotum Locomotor', 'Incantation used to bring to life inanimate objects and artifacts');
+
+INSERT INTO spells (name, description)
+VALUES ('Protean Charm', 'Links objects together for better communication');
+
+INSERT INTO spells (name, description)
+VALUES ('Protego', 'Casts an invisible shield around the caster, protecting against spells and objects (except for The Killing Curse)');
+
+INSERT INTO spells (name, description)
+VALUES ('Reducto', 'Reduces the target to pieces');
+
+INSERT INTO spells (name, description)
+VALUES ('Reducio', 'Shrinks an enlarged object to its regular size');
+
+INSERT INTO spells (name, description)
+VALUES ('Renneverate', 'Awakens or revives the target');
+
+INSERT INTO spells (name, description)
+VALUES ('Reparifors', 'Heals magical ailments like poisoning or paralysis');
+
+INSERT INTO spells (name, description)
+VALUES ('Reparo', 'Fixes broken objects');
+
+INSERT INTO spells (name, description)
+VALUES ('Rictusempra', 'A charm that disarms an opponent by tickling them');
+
+INSERT INTO spells (name, description)
+VALUES ('Riddikulus', 'Used to defeat a Boggart, the charm allows the scary creature to assume a comedic form, disarming it');
+
+INSERT INTO spells (name, description)
+VALUES ('Scourgify', 'Cleans objects');
+
+INSERT INTO spells (name, description)
+VALUES ('Sectumsempra', 'Inflicts severe lacerations and haemorrhaging on the target');
+
+INSERT INTO spells (name, description)
+VALUES ('Serpensortia', 'Conjures a live snake');
+
+INSERT INTO spells (name, description)
+VALUES ('Silencio', 'Silences the target');
+
+INSERT INTO spells (name, description)
+VALUES ('Sonorus', 'Amplifies the witch or wizard''s voice');
+
+INSERT INTO spells (name, description)
+VALUES ('Spongify', 'Softens the target');
+
+INSERT INTO spells (name, description)
+VALUES ('Stupefy', 'The Stunning spell freezes objects and renders living targets unconscious');
+
+INSERT INTO spells (name, description)
+VALUES ('Tarantallegra', 'Aimed at the legs, causes uncontrollable dancing movement');
+
+INSERT INTO spells (name, description)
+VALUES ('Unbreakable Vow', 'A magically binding contract that results in the death of whoever breaks it');
+
+INSERT INTO spells (name, description)
+VALUES ('Wingardium Leviosa', 'Causes an object to levitate; but remember what Hermione said: "It''s Wing-gar-dium Levi-o-sa, make the ''gar'' nice and long."');
 
 -- Queries
 ----------
