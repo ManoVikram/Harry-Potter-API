@@ -24,10 +24,10 @@ var db *sql.DB
 var allCharacters []models.Characters
 
 func getAllCharacters(c *gin.Context) {
-	query := `SELECT characters.id, characters.name, characters.species, characters.gender, characters.house, characters.dateOfBirth, characters.yearOfBirth, characters.isWizard, characters.bloodStatus, characters.eyeColor, characters.hairColor, characters.patronus, characters.isHogwartsStudent, characters.isHogwartsStaff, characters.actor, characters.isAlive, wands.wood, wands.core, wands.length
-	FROM characters
-	LEFT JOIN wands
-	ON characters.id = wands.character_id;`
+	query := `SELECT characters.id, characters.name, characters.species, characters.gender, characters.house, characters.dateOfBirth, characters.yearOfBirth, characters.isWizard, characters.bloodStatus, characters.eyeColor, characters.hairColor, characters.patronus, characters.isHogwartsStudent, characters.isHogwartsStaff, characters.actor, characters.isAlive, characters.image, wands.wood, wands.core, wands.length
+		FROM characters
+		LEFT JOIN wands
+		ON characters.id = wands.character_id;`
 
 	// Fetch all the characters data
 	allCharactersRow := utils.FetchAllRows(db, query)
@@ -39,19 +39,19 @@ func getAllCharacters(c *gin.Context) {
 		var wand models.Wands
 		var recasts []sql.NullString
 
-		err := allCharactersRow.Scan(&character.Id, &character.Name, &character.Species, &character.Gender, &character.House, &character.DateOfBirth, &character.YearOfBirth, &character.IsWizard, &character.BloodStatus, &character.EyeColor, &character.HairColor, &character.Patronus, &character.IsHogwartsStudent, &character.IsHogwartsStaff, &character.Actor, &character.IsAlive, &wand.Wood, &wand.Core, &wand.Length)
+		err := allCharactersRow.Scan(&character.Id, &character.Name, &character.Species, &character.Gender, &character.House, &character.DateOfBirth, &character.YearOfBirth, &character.IsWizard, &character.BloodStatus, &character.EyeColor, &character.HairColor, &character.Patronus, &character.IsHogwartsStudent, &character.IsHogwartsStaff, &character.Actor, &character.IsAlive, &character.Image, &wand.Wood, &wand.Core, &wand.Length)
 
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		alternateNamesQuery := fmt.Sprintf(`SELECT alternate_names.name
-		FROM alternate_names
-		WHERE alternate_names.character_id = '%s';`, character.Id)
+			FROM alternate_names
+			WHERE alternate_names.character_id = '%s';`, character.Id)
 
 		// Fetch all the alternate names for a character if available
 		alternateNamesRows := utils.FetchAllRows(db, alternateNamesQuery)
-		alternateNamesRows.Close()
+		defer alternateNamesRows.Close()
 
 		for alternateNamesRows.Next() {
 			var alternateName sql.NullString
@@ -66,12 +66,12 @@ func getAllCharacters(c *gin.Context) {
 		}
 
 		recastsQuery := fmt.Sprintf(`SELECT recasts.name
-		FROM recasts
-		WHERE recasts.character_id = '%s';`, character.Id)
+			FROM recasts
+			WHERE recasts.character_id = '%s';`, character.Id)
 
 		// Fetch all the names of the recasts for that character if available
 		recastsRows := utils.FetchAllRows(db, recastsQuery)
-		recastsRows.Close()
+		defer recastsRows.Close()
 
 		for recastsRows.Next() {
 			var recastName sql.NullString
@@ -95,7 +95,78 @@ func getAllCharacters(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, allCharacters)
 }
 
-func getCharacterById(c *gin.Context) {}
+func getCharacterById(c *gin.Context) {
+	var character models.Characters
+	var alternateNames []sql.NullString
+	var wand models.Wands
+	var recasts []sql.NullString
+
+	characterId := c.Param("id")
+
+	// Fetch the data of the character with that particular ID
+	query := fmt.Sprintf(`SELECT characters.id, characters.name, characters.species, characters.gender, characters.house, characters.dateOfBirth, characters.yearOfBirth, characters.isWizard, characters.bloodStatus, characters.eyeColor, characters.hairColor, characters.patronus, characters.isHogwartsStudent, characters.isHogwartsStaff, characters.actor, characters.isAlive, characters.image, wands.wood, wands.core, wands.length
+		FROM characters
+		LEFT JOIN wands
+		ON characters.id = wands.character_id
+		WHERE characters.id = '%s';`, characterId)
+
+	characterRow := utils.FetchAllRows(db, query)
+	defer characterRow.Close()
+
+	for characterRow.Next() {
+		err := characterRow.Scan(&character.Id, &character.Name, &character.Species, &character.Gender, &character.House, &character.DateOfBirth, &character.YearOfBirth, &character.IsWizard, &character.BloodStatus, &character.EyeColor, &character.HairColor, &character.Patronus, &character.IsHogwartsStudent, &character.IsHogwartsStaff, &character.Actor, &character.IsAlive, &character.Image, &wand.Wood, &wand.Core, &wand.Length)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	// Fetch that character's alternate names if available
+	alternateNamesQuery := fmt.Sprintf(`SELECT alternate_names.name
+		FROM alternate_names
+		WHERE alternate_names.character_id = '%s';`, characterId)
+
+	alternateNamesRows := utils.FetchAllRows(db, alternateNamesQuery)
+	defer alternateNamesRows.Close()
+
+	for alternateNamesRows.Next() {
+		var alternateName sql.NullString
+
+		err := alternateNamesRows.Scan(&alternateName)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		alternateNames = append(alternateNames, alternateName)
+	}
+
+	// Fetch that character's recasts if available
+	recastsQuery := fmt.Sprintf(`SELECT recasts.name
+		FROM recasts
+		WHERE recasts.character_id = '%s';`, characterId)
+
+	recastsRows := utils.FetchAllRows(db, recastsQuery)
+	defer recastsRows.Close()
+
+	for recastsRows.Next() {
+		var recast sql.NullString
+
+		err := recastsRows.Scan(&recast)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		recasts = append(recasts, recast)
+	}
+
+	character.Wand = wand
+	character.AlternateNames = alternateNames
+	character.Recasts = recasts
+
+	c.IndentedJSON(http.StatusOK, character)
+}
 
 func main() {
 	db = utils.ConnectToDB(userName, password, port, dbName)

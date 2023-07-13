@@ -7,7 +7,7 @@ type Characters struct {
 	Name              string           `json:"name"`
 	Species           string           `json:"species"`
 	Gender            string           `json:"gender"`
-	House             string           `json:"house"`
+	House             sql.NullString   `json:"house"`
 	DateOfBirth       sql.NullString   `json:"dateOfBirth"`
 	YearOfBirth       sql.NullString   `json:"yearOfBirth"`
 	IsWizard          bool             `json:"isWizard"`
@@ -17,7 +17,7 @@ type Characters struct {
 	Patronus          sql.NullString   `json:"patronus"`
 	IsHogwartsStudent bool             `json:"isHogwartsStudent"`
 	IsHogwartsStaff   bool             `json:"isHogwartsStaff"`
-	Actor             string           `json:"actor"`
+	Actor             sql.NullString   `json:"actor"`
 	IsAlive           bool             `json:"isAlive"`
 	Image             string           `json:"image"`
 	AlternateNames    []sql.NullString `json:"alternateNames"`
