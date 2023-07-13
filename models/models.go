@@ -30,3 +30,9 @@ type Wands struct {
 	Core   sql.NullString  `json:"core"`
 	Length sql.NullFloat64 `json:"length"`
 }
+
+type Spells struct {
+	Id          string `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
