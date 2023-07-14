@@ -193,6 +193,29 @@ func getAllSpells(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, allSpells)
 }
 
+func getSpellById(c * gin.Context) {
+	var spell models.Spells
+	
+	spellId := c.Param("id")
+
+	query := fmt.Sprintf(`SELECT *
+		FROM spells
+		WHERE spells.id = '%s';`, spellId)
+
+	spellRow := utils.FetchAllRows(db, query)
+	defer spellRow.Close()
+
+	for spellRow.Next() {
+		err := spellRow.Scan(&spell.Id, &spell.Name, &spell.Description)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	c.IndentedJSON(http.StatusOK, spell)
+}
+
 func main() {
 	db = utils.ConnectToDB(userName, password, port, dbName)
 	defer db.Close()
@@ -202,6 +225,7 @@ func main() {
 	router.GET("/api/characters", getAllCharacters)
 	router.GET("/api/character/:id", getCharacterById)
 	router.GET("/api/spells", getAllSpells)
+	router.GET("/api/spell/:id", getSpellById)
 
 	router.Run("127.0.0.1:8080")
 }
