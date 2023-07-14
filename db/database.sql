@@ -43,8 +43,8 @@ CREATE TABLE recasts (
 
 CREATE TABLE spells (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name TEXT NOT NULL,
-    description TEXT NOT NULL
+    name TEXT UNIQUE NOT NULL,
+    description TEXT UNIQUE NOT NULL
 );
 
 -- Characters
@@ -480,3 +480,8 @@ FROM characters
 JOIN wands
 ON wands.character_id = characters.id
 WHERE characters.id = '829460ac-4c54-4cba-9fe2-0d881d9dc7eb';
+
+-- Select speely with the specific ID
+SELECT *
+FROM spells
+WHERE spells.id = '6827c083-5411-4946-9a56-c5a409b1d6de';
